@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  telegram_bot:
+    image: telegram_bot
+    build: .
+    restart: always
+    ports:
+      - '5000:5000'
+    environment:
+      - SQL_HOST=${SQL_HOST}
+      - SQL_DATABASE=${SQL_DATABASE}
+      - SQL_USER=${SQL_USER}
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_PORT=${SQL_PORT}
+      - ADMIN_ID=${ADMIN_ID}
+      - TELEGRAM_API=${TELEGRAM_API}
+
+  db:
+    image: postgres:14.4
+    volumes:
+      - ./databases/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_NAME=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
