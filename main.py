@@ -120,7 +120,7 @@ def send_message(message):
         msg = bot.reply_to(message, "what message do you wish to send?")
         bot.register_next_step_handler(msg, ls, msg_id)
     except Exception as e:
-        bot.send_message(util.admin_id, e)
+        bot.send_message(util.admin_id, str(e))
         bot.reply_to(message, "calm down too many messages.")
 
 
@@ -131,7 +131,7 @@ def ls(message, msg_id):
         bot.send_message(msg_id, text)
         bot.send_message(chat_id, "message successfully sent")
     except Exception as e:
-        bot.send_message(util.admin_id, f"debug {chat_id}: {e}: /send")
+        bot.send_message(util.admin_id, f"debug {chat_id}: {e}: /send")  # type: ignore
 
 
 @bot.message_handler(commands=["report"])
@@ -173,8 +173,7 @@ def matchmake_1(message):
                     break
             if util.inchating(chat_id):
                 chatto = util.getid(chat_id)
-                bot.send_message(util.admin_id,
-                                 f"{chat_id} is chating with {chatto}")
+                bot.send_message(util.admin_id, f"{chat_id} is chating with {chatto}")
                 bot.send_message(
                     chat_id,
                     """Found, you can start chating now /quit to leave the chat
@@ -203,7 +202,7 @@ def quit(message):
         )
         util.requeue(chat_id)
         util.requeue(util.getid(chat_id))
-        exit(chat_id, util.getid(chat_id))
+        util.exit(chat_id, util.getid(chat_id))
 
 
 @bot.message_handler(func=lambda m: True)
