@@ -1,6 +1,6 @@
 import logging
-import psycopg2
-import telebot
+import psycopg2  # type: ignore
+import telebot  # type: ignore
 from threading import Lock
 from api_config import APIConfig
 

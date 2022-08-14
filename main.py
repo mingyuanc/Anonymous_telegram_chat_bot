@@ -1,8 +1,8 @@
 import os
 import time
-import telebot.types
-from telebot import TeleBot
-from flask import Flask, request
+import telebot.types  # type: ignore
+from telebot import TeleBot  # type: ignore
+from flask import Flask, request  # type: ignore
 from util import Telebot_utils
 
 
