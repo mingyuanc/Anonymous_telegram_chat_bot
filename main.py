@@ -1,12 +1,13 @@
 import os
 import time
-import telebot
+import telebot.types
+from telebot import TeleBot
 from flask import Flask, request
 from util import Telebot_utils
 
 
 util = Telebot_utils()
-bot = telebot.TeleBot(util.api)
+bot = TeleBot(util.api)
 server = Flask(__name__)
 
 
