@@ -16,7 +16,8 @@ class APIConfig:
         self._logger = logger if logger is not None else logging.getLogger(
             self.__class__.__name__)  # type: ignore
         self.config = self._validate_and_load_config()
-        # self._logger.info(f'Starting with config: {self.config}') # Only used for debugging
+        # self._logger.info(f'Starting with config: {self.config}')
+        # Only used for debugging
 
     def _validate_and_load_config(self) -> Dict:
         """ Validates and loads all config parameters from files or env vars

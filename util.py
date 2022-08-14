@@ -14,7 +14,7 @@ class Telebot_utils:
             database=config["SQL_DATABASE"],
             user=config["SQL_USER"],
             password=config["SQL_PASSWORD"],
-            port=config["SQL_PORT"]
+            port=config["SQL_PORT"],
         )
         self.api = config["TELEGRAM_API"]
         self.admin_id = config["ADMIN_ID"]
@@ -27,12 +27,13 @@ class Telebot_utils:
         self.bot = telebot.TeleBot(config["TELEGRAM_API"])
 
     def log_user(self, chat_id, username: str, user_first: str, user_last: str):
-        self.c.execute(
-            "SELECT * FROM botuser where user_id=(%s);", (chat_id, ))
+        self.c.execute("SELECT * FROM botuser where user_id=(%s);", (chat_id,))
         results = self.c.fetchall()
         if len(results) == 0:
-            self.c.execute("INSERT INTO botuser (user_id , username ,user_first , user_last) VALUES (%s,%s,%s,%s);",
-                           (chat_id, username, user_first, user_last))
+            self.c.execute(
+                "INSERT INTO botuser (user_id , username ,user_first , user_last) VALUES (%s,%s,%s,%s);",
+                (chat_id, username, user_first, user_last),
+            )
             self.conn.commit()
             return True
         else:
@@ -66,11 +67,10 @@ class Telebot_utils:
 
             return
         except Exception as e:
-            self.bot.send_message(
-                self.admin_id, f"debug {chat_id} : {e} : requeue")
+            self.bot.send_message(self.admin_id, f"debug {chat_id} : {e} : requeue")
 
     def getid(self, chat_id: int):
-        if self.pairs.get(chat_id) == None:
+        if self.pairs.get(chat_id) is None:
             return chat_id
         else:
             return self.pairs[chat_id]
@@ -88,14 +88,13 @@ class Telebot_utils:
             del self.pairs[chat_to]
             return
         except Exception as e:
-            self.bot.send_message(
-                self.admin_id, f"debug {chat_id} : {e} : exit")
+            self.bot.send_message(self.admin_id, f"debug {chat_id} : {e} : exit")
 
     def matchmake(self, chat_id: int):
         if chat_id in self.queue:
             return False
         self.lock.acquire()
-        if self.temppairs.get(chat_id) != None:
+        if self.temppairs.get(chat_id) is not None:
             self.deletmpairs(chat_id)
         self.queue.append(chat_id)
         if len(self.queue) == 2:
@@ -121,12 +120,14 @@ class Telebot_utils:
             self.reportlog(self.getid(chat_id), chat_id)
             return True
         else:
-            if self.temppairs.get(chat_id) == None:
+            if self.temppairs.get(chat_id) is None:
                 return False
             self.reportlog(self.temppairs[chat_id], chat_id)
             return True
 
     def reportlog(self, reported: int, reporter: int):
         self.c.execute(
-            "INSERT INTO reportlist(reported_id , reporter_id ) VALUES (%s,%s);", (reported, reporter))
+            "INSERT INTO reportlist(reported_id , reporter_id ) VALUES (%s,%s);",
+            (reported, reporter),
+        )
         self.conn.commit()

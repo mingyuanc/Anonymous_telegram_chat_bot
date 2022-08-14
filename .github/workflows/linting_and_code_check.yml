@@ -24,7 +24,8 @@ jobs:
         pip install PyYAML>=5.3.1
         pip install Jinja2>=2.10.3 
     - name: Lint with flake8
-      run: flake8 . --config .flake8
+      run: flake8 --max-line-length 120
+    # run: flake8 . --config .flake8 (.flake8 is the config file)
     # Install and run pyright code check
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.2
